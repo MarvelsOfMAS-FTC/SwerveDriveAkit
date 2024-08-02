@@ -25,8 +25,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.CAN;
-
 import java.util.Queue;
 
 /**
@@ -74,35 +72,36 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveTalon = new TalonFX(1, "static");
         turnTalon = new TalonFX(2, "static");
         cancoder = new CANcoder(3, "static");
-        absoluteEncoderOffset =
-            Rotation2d.fromRotations(-0.010742); // MUST BE CALIBRATED -0.024658209
+        absoluteEncoderOffset = Rotation2d.fromRadians(-0.0222705078125); // MUST BE CALIBRATED
         break;
       case 1: // FR
         driveTalon = new TalonFX(4, "static");
         turnTalon = new TalonFX(5, "static");
         cancoder = new CANcoder(6, "static");
         absoluteEncoderOffset =
-            Rotation2d.fromRotations(0.4709472); // MUST BE CALIBRATED 0.4638671875
+            Rotation2d.fromRadians(
+                0.46552734375 + 0.5); // MUST BE CALIBRATED the 0.5 is to reverse wheel
         break;
       case 2: // BL
         driveTalon = new TalonFX(7, "static");
         turnTalon = new TalonFX(8, "static");
         cancoder = new CANcoder(9, "static");
-        absoluteEncoderOffset = Rotation2d.fromRotations(0.4453125); // MUST BE CALIBRATED 0.4296875
+        absoluteEncoderOffset = Rotation2d.fromRadians(0.461181640625); // MUST BE CALIBRATED
         break;
       case 3: // BR
         driveTalon = new TalonFX(10, "static");
         turnTalon = new TalonFX(11, "static");
         cancoder = new CANcoder(12, "static");
         absoluteEncoderOffset =
-            Rotation2d.fromRotations(0.44555664); // MUST BE CALIBRATED -0.27978515625
+            Rotation2d.fromRadians(
+                0.272705078125 + 0.5); // MUST BE CALIBRATED the 0.5 is to reverse wheel
         break;
       default:
         throw new RuntimeException("Invalid module index");
     }
 
     var driveConfig = new TalonFXConfiguration();
-    
+
     driveConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
     driveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     driveTalon.getConfigurator().apply(driveConfig);
@@ -149,8 +148,6 @@ public class ModuleIOTalonFX implements ModuleIO {
     turnTalon.optimizeBusUtilization();
   }
 
-  
-
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
     BaseStatusSignal.refreshAll(
@@ -171,8 +168,7 @@ public class ModuleIOTalonFX implements ModuleIO {
     inputs.driveAppliedVolts = driveAppliedVolts.getValueAsDouble();
     inputs.driveCurrentAmps = new double[] {driveCurrent.getValueAsDouble()};
 
-    inputs.turnAbsolutePosition =
-        Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble()); 
+    inputs.turnAbsolutePosition = Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble());
     inputs.turnPosition =
         Rotation2d.fromRotations(turnPosition.getValueAsDouble() / TURN_GEAR_RATIO);
     inputs.turnVelocityRadPerSec =
