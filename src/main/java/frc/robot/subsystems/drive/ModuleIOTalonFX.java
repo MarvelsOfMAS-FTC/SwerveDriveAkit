@@ -68,29 +68,29 @@ public class ModuleIOTalonFX implements ModuleIO {
 
   public ModuleIOTalonFX(int index) {
     switch (index) {
-      case 0:
-        driveTalon = new TalonFX(0);
-        turnTalon = new TalonFX(1);
-        cancoder = new CANcoder(2);
-        absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+      case 0: // FL
+        driveTalon = new TalonFX(1, "static");
+        turnTalon = new TalonFX(2, "static");
+        cancoder = new CANcoder(3, "static");
+        absoluteEncoderOffset = new Rotation2d(-0.024658209); // MUST BE CALIBRATED
         break;
-      case 1:
-        driveTalon = new TalonFX(3);
-        turnTalon = new TalonFX(4);
-        cancoder = new CANcoder(5);
-        absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+      case 1: // FR
+        driveTalon = new TalonFX(4, "static");
+        turnTalon = new TalonFX(5, "static");
+        cancoder = new CANcoder(6, "static");
+        absoluteEncoderOffset = new Rotation2d(0.4638671875); // MUST BE CALIBRATED
         break;
-      case 2:
-        driveTalon = new TalonFX(6);
-        turnTalon = new TalonFX(7);
-        cancoder = new CANcoder(8);
-        absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+      case 2: // BL
+        driveTalon = new TalonFX(7, "static");
+        turnTalon = new TalonFX(8, "static");
+        cancoder = new CANcoder(9, "static");
+        absoluteEncoderOffset = new Rotation2d(0.4296875); // MUST BE CALIBRATED
         break;
-      case 3:
-        driveTalon = new TalonFX(9);
-        turnTalon = new TalonFX(10);
-        cancoder = new CANcoder(11);
-        absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
+      case 3: // BR
+        driveTalon = new TalonFX(10, "static");
+        turnTalon = new TalonFX(11, "static");
+        cancoder = new CANcoder(12, "static");
+        absoluteEncoderOffset = new Rotation2d(0.27978515625); // MUST BE CALIBRATED
         break;
       default:
         throw new RuntimeException("Invalid module index");
